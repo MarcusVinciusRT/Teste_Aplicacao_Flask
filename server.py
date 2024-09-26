@@ -1,15 +1,13 @@
 import os
-import psycopg2
+import psycopg
 from flask import Flask, render_template
 
 app = Flask(__name__)
 
 def get_db_connection():
-    conn = psycopg2.connect(host='dpg-cqpmbpjv2p9s73cfa2v0-a.frankfurt-postgres.render.com',
-                            database='movies',
-                            user='dbdesafio_a64j_user',
-                            password='PY6h7fTuFHodEKVr7fZsIMlTwboSd5WU')
+    conn = psycopg.connect("postgres://avnadmin:AVNS_I2YSg3hf2GFrMM8X7eZ@pg-126b320f-ncgaloni-ec04.d.aivencloud.com:21577/movies?sslmode=require")
     return conn
+
 
 
 @app.route('/')
@@ -17,21 +15,21 @@ def index():
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute('SELECT * FROM movies;')
-    movies = [] 
+    movies = []
     moviesFet = cur.fetchall()
     cur.close()
     conn.close()
-    
+
     """
     HTML (<li>) de todos os dados.
     """
     html = ""
-    
+
     for row in moviesFet:
         movies.append({"name": row[0], "rating": row[1]})
-    
+
     for movie in movies:
-    
+
         html = html + """
             <li class="list-group-item">
                 <span class="badge">%s
@@ -40,8 +38,8 @@ def index():
                 %s
             </li>
         """ % (movie['rating'], movie['name'])
-       
+
     return open('index.html').read()  % (html)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80)
+    app.run(host="0.0.0.0", port=5438)
