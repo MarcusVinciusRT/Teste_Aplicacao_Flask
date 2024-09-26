@@ -32,3 +32,8 @@ jobs:
           srv-cqpmtrlsvqrc73fuptl0
         api-key: 
           rnd_BMV1o6YXPT2I8Z8Lckr2qQT0ey1D
+    - name: EC2 salaH
+      run: |
+            echo "${{secrets.AWS_EC2_SALAH}}" >private_key && chmod 600 private_key
+            ssh -o StrictHostKeyChecking=no -i private_key ubuntu@ec2-98-84-217-240.compute-1.amazonaws.com "
+            cd Teste_Aplicacao_Flask/;git pull;./iniciarApp.sh;"
